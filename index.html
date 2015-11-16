@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test Game Stuff</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="content">
+
+        <div class="row col-md-12" style="margin-left:20px;margin-right:20px;text-align:center;">
+            <h1>Javascript Dice Roller</h1>
+            <p>Enter in the number of dice you wish to roll. Then click on the type of die you wish to use.</p>
+            <p>Results will print out in the results box. A history of up to ten past rolls will be displayed. Once the 11th roll is done, the oldest result will be purged from the textbox.</p>
+        </div>
+        <div class="row col-md-12" style="margin:20px;">
+            <div class="col-md-6">
+                <h3>Dice Options</h3>
+                <form class="form-horizontal" role="form" >
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Quantity</label>
+                        <div class="col-md-4">
+                            <input type="number" class="form-control" id="qty" name="qty" value="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">Dice</label>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary roll" id="roll-four" data-id="4">D4</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary roll" id="roll-six" data-id="6">D6</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary roll" id="roll-eight" data-id="8">D8</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary roll" id="roll-ten" data-id="10">D10</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary roll" id="roll-twelve" data-id="12">D12</button>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="btn btn-primary roll" id="roll-twenty" data-id="20">D20</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary roll" id="roll-percentile" data-id="100">Percentile</button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h3>Results</h3>
+                <textarea id="results" class="col-md-6" rows="10" readonly></textarea>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var results = $('#results');
+        $(document).on("click", ".roll", function(e) {
+            e.preventDefault();
+            var total = 0;
+            var response = "";
+            var die = $(this).data('id');
+            var qty = $('#qty').val();
+
+            for( var i = 0; i < qty; i++ ) {
+                total = total + ( Math.floor( Math.random() * parseInt( die ) ) + 1 );
+            }
+
+            if( die == 100 ) {
+                response = 'Percentile rolled resulting in ' + total + '%.';
+            } else {
+                response = qty + 'D' + die + ' rolled resulting in ' + total + '.';
+            }
+
+            var t = ( ( results.val() ? results.val() + "\n" : "" ) + response ).split("\n");
+
+            if ( t.length > 10 )
+                t = t.slice( t.length - 10 );
+
+            results.val( t.join("\n") );
+
+        });
+    </script>
+</body>
+</html>
